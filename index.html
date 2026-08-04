@@ -183,6 +183,7 @@
       overflow: hidden;
       box-shadow: var(--sombra);
       transition: transform 0.3s ease;
+      cursor: pointer;
     }
 
     .pizza-card:hover {
@@ -315,7 +316,111 @@
       opacity: 0.6;
     }
 
-    /* Responsive - Menú móvil */
+    /* ===== MODAL ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      animation: aparecer 0.3s ease;
+    }
+
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      background: var(--rojo);
+    }
+
+    .modal-img {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      display: block;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .modal-body h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--oscuro);
+    }
+
+    .modal-body p {
+      color: #444;
+      margin-bottom: 1rem;
+      line-height: 1.7;
+    }
+
+    .modal-historia {
+      background: var(--crema);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-top: 1.5rem;
+    }
+
+    .modal-historia h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 0.8rem;
+      color: var(--rojo);
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
       .menu-toggle {
         display: block;
@@ -355,6 +460,18 @@
       .section {
         padding: 3.5rem 0;
       }
+
+      .modal-img {
+        height: 220px;
+      }
+
+      .modal-body {
+        padding: 1.5rem;
+      }
+
+      .modal-body h2 {
+        font-size: 1.6rem;
+      }
     }
   </style>
 </head>
@@ -386,10 +503,10 @@
   <section id="menu" class="menu section">
     <div class="container">
       <h2 class="section-title">Nuestro Menú</h2>
-      <p class="section-subtitle">Pizzas artesanales cocinadas al momento</p>
+      <p class="section-subtitle">Haz clic en cualquier pizza para conocer su historia</p>
 
       <div class="menu-grid">
-        <article class="pizza-card">
+        <article class="pizza-card" data-pizza="margherita">
           <div class="pizza-img">
             <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=600&q=80" alt="Pizza Margherita">
           </div>
@@ -399,7 +516,7 @@
           </div>
         </article>
 
-        <article class="pizza-card">
+        <article class="pizza-card" data-pizza="prosciutto">
           <div class="pizza-img">
             <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=600&q=80" alt="Pizza Prosciutto">
           </div>
@@ -409,7 +526,7 @@
           </div>
         </article>
 
-        <article class="pizza-card">
+        <article class="pizza-card" data-pizza="quattro">
           <div class="pizza-img">
             <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=600&q=80" alt="Pizza Quattro Formaggi">
           </div>
@@ -419,7 +536,7 @@
           </div>
         </article>
 
-        <article class="pizza-card">
+        <article class="pizza-card" data-pizza="diavola">
           <div class="pizza-img">
             <img src="https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=600&q=80" alt="Pizza Diavola">
           </div>
@@ -429,7 +546,7 @@
           </div>
         </article>
 
-        <article class="pizza-card">
+        <article class="pizza-card" data-pizza="funghi">
           <div class="pizza-img">
             <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80" alt="Pizza Funghi">
           </div>
@@ -439,7 +556,7 @@
           </div>
         </article>
 
-        <article class="pizza-card">
+        <article class="pizza-card" data-pizza="carbonara">
           <div class="pizza-img">
             <img src="https://images.unsplash.com/photo-1571407970349-460996ee9e95?auto=format&fit=crop&w=600&q=80" alt="Pizza Carbonara">
           </div>
@@ -514,7 +631,64 @@
     </div>
   </footer>
 
+  <!-- Modal -->
+  <div class="modal" id="pizzaModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <img class="modal-img" id="modalImg" src="" alt="">
+      <div class="modal-body">
+        <h2 id="modalTitle"></h2>
+        <p id="modalDesc"></p>
+        <div class="modal-historia">
+          <h3>Su historia</h3>
+          <p id="modalHistoria"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // Datos de cada pizza
+    const pizzas = {
+      margherita: {
+        title: "Margherita",
+        img: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1000&q=80",
+        desc: "Tomate San Marzano, mozzarella di bufala, albahaca fresca y aceite de oliva.",
+        historia: "Nació en Nápoles en 1889. El chef Raffaele Esposito la creó en honor a la reina Margherita de Saboya. Los tres colores de la bandera italiana (rojo del tomate, blanco de la mozzarella y verde de la albahaca) hicieron de esta pizza un símbolo nacional. Hoy es la pizza más icónica del mundo."
+      },
+      prosciutto: {
+        title: "Prosciutto e Rúcula",
+        img: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=1000&q=80",
+        desc: "Jamón crudo, rúcula fresca, parmesano y mozzarella. Un clásico italiano.",
+        historia: "Esta pizza combina dos productos estrella de Italia: el prosciutto crudo (especialmente el de Parma) y la rúcula. Surgió en las pizzerías del norte de Italia a mediados del siglo XX, cuando se popularizó servir el jamón crudo después de sacar la pizza del horno para no cocinarlo y conservar su textura delicada."
+      },
+      quattro: {
+        title: "Quattro Formaggi",
+        img: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=1000&q=80",
+        desc: "Mozzarella, gorgonzola, parmesano y fontina. Para los amantes del queso.",
+        historia: "La Quattro Formaggi nació en el norte de Italia, en la región de Lombardía y Piamonte, donde la tradición quesera es muy fuerte. Cada queso aporta algo distinto: la mozzarella da elasticidad, el gorgonzola el toque picante, el parmesano la salinidad y la fontina la cremosidad. Es una de las pizzas más queridas por los amantes del queso."
+      },
+      diavola: {
+        title: "Diavola",
+        img: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=1000&q=80",
+        desc: "Salami picante, tomate, mozzarella y chile. Ideal si te gusta el fuego.",
+        historia: "Su nombre significa 'diablesa' en italiano. Nació en el sur de Italia, especialmente en Nápoles y Campania, donde el gusto por el picante es tradicional. El salame piccante (similar al pepperoni pero más intenso) y el chile fresco le dan ese carácter fuerte que la hace inconfundible. Es la favorita de quienes buscan sabor intenso."
+      },
+      funghi: {
+        title: "Funghi",
+        img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1000&q=80",
+        desc: "Champiñones frescos, ajo confitado, mozzarella y tomillo.",
+        historia: "La pizza de hongos es una de las más antiguas variaciones de la pizza napolitana. Los hongos (funghi) siempre han sido muy apreciados en la cocina italiana, especialmente en otoño. Tradicionalmente se usan champiñones frescos o porcini. En muchas pizzerías se añade un toque de ajo y hierbas para resaltar el sabor terroso de los hongos."
+      },
+      carbonara: {
+        title: "Carbonara",
+        img: "https://images.unsplash.com/photo-1571407970349-460996ee9e95?auto=format&fit=crop&w=1000&q=80",
+        desc: "Guanciale, yema de huevo, pecorino y pimienta negra. Sin tomate.",
+        historia: "Inspirada en el famoso plato de pasta romano, la pizza Carbonara es una creación más moderna. Nació cuando las pizzerías empezaron a adaptar recetas clásicas de pasta. El guanciale (mejilla de cerdo curada), el pecorino romano y la yema de huevo crean una salsa cremosa sin necesidad de nata. No lleva tomate, respetando la pureza de la receta original."
+      }
+    };
+
+    // Menú móvil
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
 
@@ -522,12 +696,57 @@
       navLinks.classList.toggle('active');
     });
 
-    // Cerrar el menú al hacer clic en cualquier enlace
-    const links = navLinks.querySelectorAll('a');
-    links.forEach(function(link) {
+    navLinks.querySelectorAll('a').forEach(function(link) {
       link.addEventListener('click', function() {
         navLinks.classList.remove('active');
       });
+    });
+
+    // Modal
+    const modal = document.getElementById('pizzaModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalHistoria = document.getElementById('modalHistoria');
+    const modalClose = document.getElementById('modalClose');
+
+    // Abrir modal al hacer clic en una pizza
+    document.querySelectorAll('.pizza-card').forEach(function(card) {
+      card.addEventListener('click', function() {
+        const tipo = card.getAttribute('data-pizza');
+        const data = pizzas[tipo];
+
+        modalImg.src = data.img;
+        modalImg.alt = data.title;
+        modalTitle.textContent = data.title;
+        modalDesc.textContent = data.desc;
+        modalHistoria.textContent = data.historia;
+
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Evita scroll de fondo
+      });
+    });
+
+    // Cerrar modal
+    function cerrarModal() {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    modalClose.addEventListener('click', cerrarModal);
+
+    // Cerrar al hacer clic fuera del contenido
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        cerrarModal();
+      }
+    });
+
+    // Cerrar con tecla Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        cerrarModal();
+      }
     });
   </script>
 </body>
