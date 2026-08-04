@@ -76,6 +76,7 @@
       justify-content: space-between;
       align-items: center;
       height: 70px;
+      position: relative;
     }
 
     .logo {
@@ -108,9 +109,11 @@
       display: none;
       background: none;
       border: none;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       cursor: pointer;
       color: var(--oscuro);
+      padding: 5px 10px;
+      line-height: 1;
     }
 
     /* Hero */
@@ -312,8 +315,12 @@
       opacity: 0.6;
     }
 
-    /* Responsive */
+    /* Responsive - Menú móvil */
     @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
       .nav-links {
         display: none;
         position: absolute;
@@ -323,16 +330,13 @@
         background: var(--crema);
         flex-direction: column;
         padding: 1.5rem;
-        gap: 1rem;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        gap: 1.2rem;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        z-index: 99;
       }
 
       .nav-links.active {
         display: flex;
-      }
-
-      .menu-toggle {
-        display: block;
       }
 
       .about-grid {
@@ -360,14 +364,14 @@
     <div class="container nav">
       <a href="#" class="logo">La Nonna</a>
       <nav>
-        <ul class="nav-links">
+        <ul class="nav-links" id="navLinks">
           <li><a href="#inicio">Inicio</a></li>
           <li><a href="#menu">Menú</a></li>
           <li><a href="#nosotros">Nosotros</a></li>
           <li><a href="#contacto">Contacto</a></li>
         </ul>
       </nav>
-      <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">☰</button>
     </div>
   </header>
 
@@ -511,15 +515,17 @@
   </footer>
 
   <script>
-    const toggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
 
-    toggle.addEventListener('click', () => {
+    menuToggle.addEventListener('click', function() {
       navLinks.classList.toggle('active');
     });
 
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
+    // Cerrar el menú al hacer clic en cualquier enlace
+    const links = navLinks.querySelectorAll('a');
+    links.forEach(function(link) {
+      link.addEventListener('click', function() {
         navLinks.classList.remove('active');
       });
     });
