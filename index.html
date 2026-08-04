@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pizzería La Nonna | Auténtica Pizza Italiana</title>
+  <meta name="description" content="La mejor pizza artesanal de la ciudad. Masa madre, ingredientes frescos y horno de leña.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --rojo: #c94c4c;
+      --rojo-oscuro: #a63d3d;
+      --crema: #f4f1de;
+      --oscuro: #3d405b;
+      --verde: #81b29a;
+      --amarillo: #f2cc8f;
+      --sombra: 0 10px 30px rgba(61, 64, 91, 0.12);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--oscuro);
+      background: var(--crema);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section {
+      padding: 5rem 0;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      color: var(--oscuro);
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 3rem;
+      font-weight: 300;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(244, 241, 222, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--rojo);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--oscuro);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--rojo);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--oscuro);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(rgba(61, 64, 91, 0.7), rgba(201, 76, 76, 0.6)),
+                  url('https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      padding: 0 1.5rem;
+    }
+
+    .hero-content h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .hero-content h1 span {
+      color: var(--amarillo);
+    }
+
+    .hero-content p {
+      font-size: 1.15rem;
+      font-weight: 300;
+      margin-bottom: 2rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--rojo);
+      color: white;
+      padding: 0.9rem 2.2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background: var(--rojo-oscuro);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(201, 76, 76, 0.3);
+    }
+
+    /* Menu */
+    .menu {
+      background: white;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .pizza-card {
+      background: var(--crema);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--sombra);
+      transition: transform 0.3s ease;
+    }
+
+    .pizza-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .pizza-img {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+
+    .pizza-info {
+      padding: 1.5rem;
+    }
+
+    .pizza-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .pizza-info p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 1rem;
+    }
+
+    .price {
+      font-weight: 600;
+      color: var(--rojo);
+      font-size: 1.2rem;
+    }
+
+    /* About */
+    .about {
+      background: var(--crema);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-text .section-title {
+      text-align: left;
+      margin-bottom: 1.5rem;
+    }
+
+    .about-text p {
+      margin-bottom: 1.2rem;
+      color: #444;
+    }
+
+    .stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 2rem;
+    }
+
+    .stat-number {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--rojo);
+      font-weight: 700;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .about-image {
+      height: 380px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--sombra);
+    }
+
+    .about-placeholder {
+      height: 100%;
+      background: linear-gradient(135deg, var(--oscuro), var(--rojo));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+
+    /* Contact */
+    .contact {
+      background: white;
+      text-align: center;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .contact-card {
+      background: var(--crema);
+      padding: 2rem 1.5rem;
+      border-radius: 16px;
+      box-shadow: var(--sombra);
+    }
+
+    .contact-card h3 {
+      margin-bottom: 0.8rem;
+      font-size: 1.1rem;
+    }
+
+    .contact-card p {
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    .btn-whatsapp {
+      background: #25d366;
+    }
+
+    .btn-whatsapp:hover {
+      background: #1da851;
+      box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--oscuro);
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+      padding: 2rem 0;
+      font-size: 0.9rem;
+    }
+
+    .footer-note {
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: var(--crema);
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 1rem;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .about-text .section-title {
+        text-align: center;
+      }
+
+      .stats {
+        justify-content: center;
+      }
+
+      .section {
+        padding: 3.5rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container nav">
+      <a href="#" class="logo">🍕 La Nonna</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#menu">Menú</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+      <button class="menu-toggle" aria-label="Abrir menú">☰</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="inicio" class="hero">
+    <div class="hero-content">
+      <h1>Pizza hecha con <span>amor</span> y tradición</h1>
+      <p>Masa madre fermentada 48 horas · Horno de leña · Ingredientes de temporada</p>
+      <a href="#menu" class="btn">Ver Menú</a>
+    </div>
+  </section>
+
+  <!-- Menú -->
+  <section id="menu" class="menu section">
+    <div class="container">
+      <h2 class="section-title">Nuestro Menú</h2>
+      <p class="section-subtitle">Pizzas artesanales cocinadas al momento</p>
+
+      <div class="menu-grid">
+        <article class="pizza-card">
+          <div class="pizza-img" style="background: linear-gradient(135deg, #c94c4c, #e07a5f);">
+            <span>🍅</span>
+          </div>
+          <div class="pizza-info">
+            <h3>Margherita</h3>
+            <p>Tomate San Marzano, mozzarella di bufala, albahaca fresca y aceite de oliva.</p>
+            <div class="price">$12.90</div>
+          </div>
+        </article>
+
+        <article class="pizza-card">
+          <div class="pizza-img" style="background: linear-gradient(135deg, #3d405b, #81b29a);">
+            <span>🌿</span>
+          </div>
+          <div class="pizza-info">
+            <h3>Prosciutto e Rúcula</h3>
+            <p>Jamón crudo, rúcula fresca, parmesano y mozzarella. Un clásico italiano.</p>
+            <div class="price">$15.50</div>
+          </div>
+        </article>
+
+        <article class="pizza-card">
+          <div class="pizza-img" style="background:
